@@ -1,0 +1,101 @@
+---
+title: "Sea Turtles at Water Island"
+format: html
+editor: visual
+---
+## Turtle density in bays
+
+I conducted snorkel surveys for turtles in four bays on Water Island, documenting each turtle I encountered. I compared the density of turtles between the bays using a one-way ANOVA in R. 
+
+### One-way ANOVA
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+
+
+Turtles <- read.csv("../Turtle_densityV3.csv")
+
+Turtles_long <- Turtles %>%
+  pivot_longer(
+    cols = starts_with("Density"),
+    names_to = "Replicate",
+    values_to = "Turtle.density"
+  )
+
+# Summary dataframe of the data
+
+Turtle_summary <- Turtles_long %>%
+  group_by(Bay) %>%
+  summarise(
+    MEAN_density  = mean(Turtle.density),
+    SEM_density = sd(Turtle.density) / sqrt(length(Turtle.density))
+  )
+```
+
+
+
+```{r}
+anova_result <- aov(Turtle.density ~ Bay, data = Turtles_long) 
+summary(anova_result) 
+```
+
+### Testing ANOVA assumptions
+
+
+```{r}
+TurtleResiduals <- rstandard(anova_result)
+
+shapiro.test(TurtleResiduals)
+```
+The p-value is less than 0.05, indicating the data do not follow a normal distribution, violating one of the assumptions of ANOVA
+
+
+
+```{r}
+bartlett.test(Turtle.density ~ Bay, data = Turtles_long) 
+```
+The p-value is less than 0.05, indicating that the variances are not equal accross all the groups, violating another assumption of ANOVA. 
+
+### Kruskal-Wallis test non-parametric test
+
+Since the results of the the Shapiro-Wilk test and the Bartlett test violated the assumptions of ANOVA, I did the non-parameteric equivalent of one-way ANOVA, the Kruskal-Wallis test. 
+
+
+```{r}
+kruskal_test_result <- kruskal.test(Turtle.density ~ Bay, data = Turtles_long)
+print(kruskal_test_result)
+```
+
+The p-value from the Kruskal-Wallis test is less than 0.05 at 7.338e-05, indicating statistically significant differences between the four bays.
+
+
+### Graph of the data
+```{r}
+#| echo: false
+ggplot(Turtle_summary, aes(x=Bay, y=MEAN_density)) +
+  geom_bar(stat="identity", fill = "turquoise", color = "black") +
+  geom_errorbar(aes(ymin=MEAN_density-SEM_density, ymax=MEAN_density+SEM_density), width=.2) + labs (title = "Mean Density of Turtles in Four Bays on Water Island", x = "Bay", y = "Mean Density (turtles per ha.)") + theme_minimal() 
+
+```
+
+
+
+## Turtle hotspots
+
+I surveyed the perimeter of Water Island on snorkel and recorded the locations of each sea turtle I encountered. I conducted a Getis-Ord gi* hotspot analysis in ArcGIS pro to test for statistically significant turtle hotspots.
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-cap: "Getis-Ord gi* analysis turtle hotspot map"
+
+knitr::include_graphics("../Turtle hotspots.jpg")
+```
+---
+
