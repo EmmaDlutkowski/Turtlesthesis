@@ -1,6 +1,7 @@
 ---
 title: "Sea Turtles at Water Island"
 format: html
+toc: TRUE
 editor: visual
 ---
 
@@ -58,7 +59,7 @@ bartlett.test(Turtle.density ~ Bay, data = Turtles_long)
 
 The p-value is less than 0.05, indicating that the variances are not equal accross all the groups, violating another assumption of ANOVA.
 
-### Kruskal-Wallis test non-parametric test
+### Kruskal-Wallis non-parametric test
 
 Since the results of the the Shapiro-Wilk test and the Bartlett test violated the assumptions of ANOVA, I did the non-parameteric equivalent of one-way ANOVA, the Kruskal-Wallis test.
 

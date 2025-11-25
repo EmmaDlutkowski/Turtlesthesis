@@ -71,10 +71,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#turtle-density-in-bays" id="toc-turtle-density-in-bays" class="nav-link active" data-scroll-target="#turtle-density-in-bays">Turtle density in bays</a>
+  <ul class="collapse">
+  <li><a href="#one-way-anova" id="toc-one-way-anova" class="nav-link" data-scroll-target="#one-way-anova">One-way ANOVA</a></li>
+  <li><a href="#testing-anova-assumptions" id="toc-testing-anova-assumptions" class="nav-link" data-scroll-target="#testing-anova-assumptions">Testing ANOVA assumptions</a></li>
+  <li><a href="#kruskal-wallis-non-parametric-test" id="toc-kruskal-wallis-non-parametric-test" class="nav-link" data-scroll-target="#kruskal-wallis-non-parametric-test">Kruskal-Wallis non-parametric test</a></li>
+  <li><a href="#graph-of-the-data" id="toc-graph-of-the-data" class="nav-link" data-scroll-target="#graph-of-the-data">Graph of the data</a></li>
+  </ul></li>
+  <li><a href="#turtle-hotspots" id="toc-turtle-hotspots" class="nav-link" data-scroll-target="#turtle-hotspots">Turtle hotspots</a></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -140,8 +155,8 @@ Bartlett's K-squared = 40.531, df = 3, p-value = 8.22e-09</code></pre>
 </div>
 <p>The p-value is less than 0.05, indicating that the variances are not equal accross all the groups, violating another assumption of ANOVA.</p>
 </section>
-<section id="kruskal-wallis-test-non-parametric-test" class="level3">
-<h3 class="anchored" data-anchor-id="kruskal-wallis-test-non-parametric-test">Kruskal-Wallis test non-parametric test</h3>
+<section id="kruskal-wallis-non-parametric-test" class="level3">
+<h3 class="anchored" data-anchor-id="kruskal-wallis-non-parametric-test">Kruskal-Wallis non-parametric test</h3>
 <p>Since the results of the the Shapiro-Wilk test and the Bartlett test violated the assumptions of ANOVA, I did the non-parameteric equivalent of one-way ANOVA, the Kruskal-Wallis test.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>kruskal_test_result <span class="ot">&lt;-</span> <span class="fu">kruskal.test</span>(Turtle.density <span class="sc">~</span> Bay, <span class="at">data =</span> Turtles_long)</span>
